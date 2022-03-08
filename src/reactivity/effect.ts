@@ -6,7 +6,7 @@ class ReactiveEffect {
 	}
 	run() {
 		activeEffect = this;
-		this._fn();
+		return this._fn();
 	}
 }
 

@@ -17,11 +17,12 @@ describe("effect", () => {
 		expect(nextAge).toBe(12);
 	});
 
-	it("", () => {
+	it("should return runner when call effect", () => {
 		//  1. effect(fn) -> function (runner) -> fn -> return
 		let foo = 10;
 		const runner = effect(() => {
 			foo++;
+			return "foo";
 		});
 
 		expect(foo).toBe(11);
