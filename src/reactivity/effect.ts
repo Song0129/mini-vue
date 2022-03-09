@@ -12,8 +12,10 @@ class ReactiveEffect {
 }
 
 // 依赖收集
+// 依赖集合targetMap
 const targetMap = new Map();
 export function track(target, key) {
+	// target在targetMap对应的依赖集合
 	let depsMap = targetMap.get(target);
 
 	if (!depsMap) {
@@ -21,6 +23,7 @@ export function track(target, key) {
 		targetMap.set(target, depsMap);
 	}
 
+	// key在depsMap对应的依赖
 	let dep = depsMap.get(key);
 
 	if (!dep) {
@@ -33,9 +36,12 @@ export function track(target, key) {
 
 // 依赖触发
 export function trigger(target, key) {
+	// target在targetMap对应的依赖集合
 	let depsMap = targetMap.get(target);
+	// key在depsMap对应的依赖
 	let dep = depsMap.get(key);
 
+	// 循环遍历执行对应的依赖
 	for (const effect of dep) {
 		effect.run();
 	}
