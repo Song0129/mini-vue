@@ -20,6 +20,7 @@ export function track(target, key) {
 
 	if (!depsMap) {
 		depsMap = new Map();
+		// 存储集合
 		targetMap.set(target, depsMap);
 	}
 
