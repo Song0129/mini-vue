@@ -1,7 +1,7 @@
 class ReactiveEffect {
 	private _fn: any;
 
-	constructor(fn) {
+	constructor(fn, public scheduler?) {
 		this._fn = fn;
 	}
 	run() {
@@ -44,14 +44,18 @@ export function trigger(target, key) {
 
 	// 循环遍历执行对应的依赖
 	for (const effect of dep) {
-		effect.run();
+		if (effect.scheduler) {
+			effect.scheduler();
+		} else {
+			effect.run();
+		}
 	}
 }
 
 let activeEffect;
-export function effect(fn) {
+export function effect(fn, options: any = {}) {
 	// fn
-	const _effect = new ReactiveEffect(fn);
+	const _effect = new ReactiveEffect(fn, options.scheduler);
 	_effect.run();
 
 	// 返回runner函数(即run)--》执行后返回fn
