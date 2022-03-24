@@ -5,9 +5,10 @@ class ReactiveEffect {
 	deps = [];
 	active = true;
 	onStop?: () => void;
-
-	constructor(fn, public scheduler?) {
+	public scheduler: Function | undefined;
+	constructor(fn, scheduler?: Function) {
 		this._fn = fn;
+		this.scheduler = scheduler;
 	}
 	run() {
 		activeEffect = this;
