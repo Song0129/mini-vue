@@ -1,6 +1,7 @@
 class ReactiveEffect {
 	private _fn: any;
 	deps = [];
+	active = true;
 
 	constructor(fn, public scheduler?) {
 		this._fn = fn;
@@ -11,10 +12,17 @@ class ReactiveEffect {
 		return this._fn();
 	}
 	stop() {
-		this.deps.forEach((dep: any) => {
-			dep.delete(this);
-		});
+		if (this.active) {
+			cleanupEffect(this);
+			this.active = false;
+		}
 	}
+}
+
+function cleanupEffect(effect) {
+	effect.deps.forEach((dep: any) => {
+		dep.delete(effect);
+	});
 }
 
 // 依赖收集
