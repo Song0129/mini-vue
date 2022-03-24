@@ -1,5 +1,6 @@
 class ReactiveEffect {
 	private _fn: any;
+	deps = [];
 
 	constructor(fn, public scheduler?) {
 		this._fn = fn;
@@ -8,6 +9,11 @@ class ReactiveEffect {
 		activeEffect = this;
 		// 返回当前的fn
 		return this._fn();
+	}
+	stop() {
+		this.deps.forEach((dep: any) => {
+			dep.delete(this);
+		});
 	}
 }
 
@@ -33,6 +39,8 @@ export function track(target, key) {
 	}
 
 	dep.add(activeEffect);
+
+	activeEffect.deps.push(dep);
 }
 
 // 依赖触发
@@ -58,6 +66,13 @@ export function effect(fn, options: any = {}) {
 	const _effect = new ReactiveEffect(fn, options.scheduler);
 	_effect.run();
 
+	const runner: any = _effect.run.bind(_effect);
+	runner.effect = _effect;
+
 	// 返回runner函数(即run)--》执行后返回fn
-	return _effect.run.bind(_effect);
+	return runner;
+}
+
+export function stop(runner) {
+	runner.effect.stop();
 }
