@@ -81,9 +81,9 @@ let activeEffect;
 export function effect(fn, options: any = {}) {
 	// fn
 	const _effect = new ReactiveEffect(fn, options.scheduler);
-	// options 复杂时
-	Object.assign(_effect, options);
 
+	// options 复杂时
+	// Object.assign(_effect, options);
 	extend(_effect, options);
 
 	_effect.run();
