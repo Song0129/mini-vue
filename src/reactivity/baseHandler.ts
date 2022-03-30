@@ -1,4 +1,5 @@
 import { track, trigger } from "./effect";
+import { ReactiveFlags } from "./reactive";
 
 const get = createGetter();
 const set = createSetter();
@@ -9,6 +10,10 @@ function createGetter(isReadonly = false) {
 	// get时，收集依赖即收集内容改变时的回调函数fn
 	// set时，触发依赖即触发内容改变时需执行的函数fn
 	return function get(target, key) {
+		if (key === ReactiveFlags.IS_REACTIVE) {
+			return !isReadonly;
+		}
+
 		const res = Reflect.get(target, key);
 
 		if (!isReadonly) {
