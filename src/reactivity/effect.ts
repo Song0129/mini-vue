@@ -1,5 +1,8 @@
 import { extend } from "../shared";
 
+let activeEffect;
+let shouldTrack = true;
+
 class ReactiveEffect {
 	private _fn: any;
 	deps = [];
@@ -12,8 +15,21 @@ class ReactiveEffect {
 	}
 	run() {
 		activeEffect = this;
+		// 1. 会收集依赖
+		//  shouldTrack 来区分
+		if (!this.active) {
+			return this._fn();
+		}
+
+		shouldTrack = true;
+		activeEffect = this;
+
+		const result = this._fn();
+		// reset
+		shouldTrack = false;
+
 		// 返回当前的fn
-		return this._fn();
+		return result;
 	}
 	stop() {
 		if (this.active) {
@@ -30,12 +46,15 @@ function cleanupEffect(effect) {
 	effect.deps.forEach((dep: any) => {
 		dep.delete(effect);
 	});
+	effect.deps.length = 0;
 }
 
 // 依赖收集
 // 依赖集合targetMap
 const targetMap = new Map();
 export function track(target, key) {
+	if (!isTracking()) return;
+
 	// target在targetMap对应的依赖集合
 	let depsMap = targetMap.get(target);
 
@@ -53,11 +72,15 @@ export function track(target, key) {
 		depsMap.set(key, dep);
 	}
 
-	if (!activeEffect) return;
-
+	// 已经存在于dep中了
+	if (dep.has(activeEffect)) return;
 	dep.add(activeEffect);
 
 	activeEffect.deps.push(dep);
+}
+
+function isTracking() {
+	return shouldTrack && activeEffect !== undefined;
 }
 
 // 依赖触发
@@ -77,7 +100,6 @@ export function trigger(target, key) {
 	}
 }
 
-let activeEffect;
 export function effect(fn, options: any = {}) {
 	// fn
 	const _effect = new ReactiveEffect(fn, options.scheduler);
