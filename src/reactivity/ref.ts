@@ -1,3 +1,4 @@
+import { hasChanges } from "../shared";
 import { isTracking, trackEffects, triggerEffects } from "./effect";
 
 class RefImpl {
@@ -8,17 +9,23 @@ class RefImpl {
 		this.dep = new Set();
 	}
 	get value() {
-		if (isTracking()) trackEffects(this.dep);
+		trackRefValue(this);
 		return this._value;
 	}
 	set value(newValue) {
 		// 一定先去修改了value值
 		// newValue -> this._value
-		if (Object.is(newValue, this._value)) return;
-
-		this._value = newValue;
-		triggerEffects(this.dep);
+		// hasChanged
+		if (hasChanges(newValue, this._value)) {
+			this._value = newValue;
+			triggerEffects(this.dep);
+		}
 	}
+}
+
+function trackRefValue(ref) {
+	// 如果是tracking的话，就追踪dep
+	if (isTracking()) trackEffects(ref.dep);
 }
 
 export function ref(value) {
