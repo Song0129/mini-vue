@@ -2,7 +2,7 @@ export const App = {
 	// .vue
 	// <template></template>
 	// render
-	render(h) {
+	render() {
 		// ui
 		return h("div", "hi, " + this.msg);
 	},
