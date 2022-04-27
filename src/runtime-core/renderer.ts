@@ -8,13 +8,11 @@ export function render(vnode, container) {
 }
 
 function patch(vnode, container) {
-	debugger;
 	// 去处理组件
 
 	// TODO 判断vnode 是不是 element
 	// 是 element 那么就应该处理element
 	// 思考题：如何区分是element还是component类型？
-	console.log(vnode);
 	if (typeof vnode.type === "string") {
 		processElement(vnode, container);
 	} else if (isObject(vnode.type)) {
@@ -66,7 +64,8 @@ function mountComponent(vnode: any, container) {
 }
 
 function setupRenderEffect(instance: any, container) {
-	const subTree = instance.render();
+	const { proxy } = instance;
+	const subTree = instance.render.call(proxy);
 	// vnode -> patch
 	// vnode -> element -> mountElement
 	patch(subTree, container);
