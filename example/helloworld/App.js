@@ -12,7 +12,17 @@ export const App = {
 		// ui
 		return h(
 			"div",
-			{ id: "root", class: ["red", "hard"] },
+			{
+				id: "root",
+				class: ["red", "hard"],
+				onClick() {
+					console.log("click");
+				},
+				onMouseDown() {
+					console.log("mouse down");
+				},
+			},
+
 			//setupState
 			// this.$el -> get root element
 			"hi, " + this.msg
