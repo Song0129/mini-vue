@@ -1,3 +1,5 @@
+import { hasOwn } from "../shared/index";
+
 const publicPropertiesMap = {
 	$el: i => i.vnode.el,
 };
@@ -5,11 +7,16 @@ const publicPropertiesMap = {
 export const PublicInstanceProxyHandlers = {
 	get({ _: instance }, key) {
 		// setupState
-		const { setupState } = instance;
+		const { setupState, props } = instance;
 		if (key in setupState) {
 			return setupState[key];
 		}
 
+		if (hasOwn(instance, key)) {
+			return setupState[key];
+		} else if (hasOwn(props, key)) {
+			return props[key];
+		}
 		// key -> $el
 		const publicGetter = publicPropertiesMap[key];
 		if (publicGetter) {
