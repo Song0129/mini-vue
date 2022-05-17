@@ -50,7 +50,7 @@ function mountElement(vnode: any, container: any) {
 
 	for (const key in props) {
 		const val = props[key];
-		console.log(key);
+		// console.log(key);
 		// 具体的click事件 =》抽象为通用性事件
 		// on + Event name
 		const isOn = (key: string) => /^on[A-Z]/.test(key);

@@ -3,7 +3,7 @@ import { h } from "../../lib/mini-vue.esm.js";
 export const Foo = {
 	setup(props, { emit }) {
 		const emitAdd = () => {
-			console.log("emitAdd");
+			console.log("emit add");
 			emit("add");
 		};
 		return {
