@@ -12,6 +12,9 @@ export const App = {
 				onAdd(a, b) {
 					console.log("onAdd", a, b);
 				},
+				onAddFoo(a, b) {
+					console.log("onAddFoo", a, b);
+				},
 			}),
 		]);
 	},
