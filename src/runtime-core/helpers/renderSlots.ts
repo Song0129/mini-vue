@@ -1,6 +1,9 @@
 import { createVNode } from "../vnode";
 
-export function renderSlots(slots) {
+export function renderSlots(slots, name) {
 	// 创建虚拟节点
-	return createVNode("div", {}, slots);
+	const slot = slots[name];
+	if (slot) {
+		return createVNode("div", {}, slot);
+	}
 }
