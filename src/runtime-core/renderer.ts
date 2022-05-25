@@ -16,12 +16,20 @@ function patch(vnode, container) {
 	// 思考题：如何区分是element还是component类型？
 	// shapeFlags
 	// vnode -> flag  给vnode添加表示
-	const { shapeFlag } = vnode;
-	if (shapeFlag & ShapeFlags.ELEMENT) {
-		processElement(vnode, container);
-		// STATEFUL_COMPONENT
-	} else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
-		processComponent(vnode, container);
+	const { type, shapeFlag } = vnode;
+	switch (type) {
+		case "Fragment":
+			processFragment(vnode, container);
+			break;
+
+		default:
+			if (shapeFlag & ShapeFlags.ELEMENT) {
+				processElement(vnode, container);
+				// STATEFUL_COMPONENT
+			} else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
+				processComponent(vnode, container);
+			}
+			break;
 	}
 }
 
@@ -91,4 +99,7 @@ function setupRenderEffect(instance: any, initialVnode, container) {
 
 	// element -> mount
 	initialVnode.el = subTree.el;
+}
+function processFragment(vnode: any, container: any) {
+	mountChildren(vnode, container);
 }

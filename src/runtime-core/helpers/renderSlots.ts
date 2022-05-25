@@ -6,7 +6,7 @@ export function renderSlots(slots, name, props) {
 	if (slot) {
 		if (typeof slot === "function") {
 			// children 是不可以有 array
-			return createVNode("div", {}, slot(props));
+			return createVNode("Fragment", {}, slot(props));
 		}
 	}
 }
