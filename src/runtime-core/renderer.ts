@@ -1,6 +1,7 @@
 import { isObject } from "../shared/index";
 import { ShapeFlags } from "../shared/ShapeFlags";
 import { createComponentInstance, setupComponent } from "./component";
+import { Fragment } from "./vnode";
 
 export function render(vnode, container) {
 	// patch
@@ -18,7 +19,7 @@ function patch(vnode, container) {
 	// vnode -> flag  给vnode添加表示
 	const { type, shapeFlag } = vnode;
 	switch (type) {
-		case "Fragment":
+		case Fragment:
 			processFragment(vnode, container);
 			break;
 
