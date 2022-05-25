@@ -17,7 +17,7 @@ export function createVNode(type, props?, children?) {
 	// 组件 + children Object
 	if (vnode.shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
 		if (typeof children === "object") {
-			vnode.shapeFlag = ShapeFlags.SLOT_CHILDREN;
+			vnode.shapeFlag |= ShapeFlags.SLOT_CHILDREN;
 		}
 	}
 
