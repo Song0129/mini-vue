@@ -16,7 +16,9 @@ export function createVNode(type, props?, children?) {
 	// 判断是否是slot
 	// 组件 + children Object
 	if (vnode.shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
-		vnode.shapeFlag = ShapeFlags.SLOT_CHILDREN;
+		if (typeof children === "object") {
+			vnode.shapeFlag = ShapeFlags.SLOT_CHILDREN;
+		}
 	}
 
 	return vnode;
