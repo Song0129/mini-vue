@@ -1,3 +1,4 @@
+import { effect } from "../reactivity/effect";
 import { isObject } from "../shared/index";
 import { ShapeFlags } from "../shared/ShapeFlags";
 import { createComponentInstance, setupComponent } from "./component";
@@ -5,7 +6,11 @@ import { createAppAPI } from "./createApp";
 import { Fragment, Text } from "./vnode";
 
 export function creatRenderer(options) {
-	const { createElement: hostCreateElement, patchProp: hostPatchProp, insert: hostInsert } = options;
+	const {
+		createElement: hostCreateElement,
+		patchProp: hostPatchProp,
+		insert: hostInsert,
+	} = options;
 
 	function render(vnode, container) {
 		// patch
@@ -104,14 +109,29 @@ export function creatRenderer(options) {
 	}
 
 	function setupRenderEffect(instance: any, initialVnode, container) {
-		const { proxy } = instance;
-		const subTree = instance.render.call(proxy);
-		// vnode -> patch
-		// vnode -> element -> mountElement
-		patch(subTree, container, instance);
+		effect(() => {
+			if (!instance.isMounted) {
+				console.log("init");
+				const { proxy } = instance;
+				const subTree = (instance.subTree = instance.render.call(proxy));
+				console.log(subTree);
+				// vnode -> patch
+				// vnode -> element -> mountElement
+				patch(subTree, container, instance);
 
-		// element -> mount
-		initialVnode.el = subTree.el;
+				// element -> mount
+				initialVnode.el = subTree.el;
+
+				instance.isMounted = true;
+			} else {
+				console.log("update");
+				const { proxy } = instance;
+				const subTree = instance.render.call(proxy);
+				const prevSubTree = instance.subTree;
+				console.log("current", subTree);
+				console.log("prevSubTree", prevSubTree);
+			}
+		});
 	}
 	function processFragment(vnode: any, container: any, parentComponent: any) {
 		mountChildren(vnode, container, parentComponent);
