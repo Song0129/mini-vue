@@ -1,10 +1,12 @@
 import { creatRenderer } from "../runtime-core";
 
+// 创建节点
 function createElement(type) {
 	// console.log("createElement----------");
 	return document.createElement(type);
 }
 
+// 设置属性
 function patchProp(el, key, prevVal, nextVal) {
 	// console.log("patchProp----------");
 	const isOn = (key: string) => /^on[A-Z]/.test(key);
@@ -20,15 +22,32 @@ function patchProp(el, key, prevVal, nextVal) {
 	}
 }
 
+// 添加节点
 function insert(el, parent) {
 	// console.log("insert----------");
 	parent.append(el);
+}
+
+// 删除节点
+function remove(child) {
+	const parent = child.parentNode;
+	if (parent) {
+		parent.removeChild(child);
+	}
+}
+
+// 设置节点文本
+function setElementText(el, text) {
+	// console.log("setElementText----------");
+	el.textContent = text;
 }
 
 const renderer: any = creatRenderer({
 	createElement,
 	patchProp,
 	insert,
+	remove,
+	setElementText,
 });
 
 export function createApp(...args) {
