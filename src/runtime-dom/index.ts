@@ -23,9 +23,10 @@ function patchProp(el, key, prevVal, nextVal) {
 }
 
 // 添加节点
-function insert(el, parent) {
+function insert(child, parent, anchor) {
 	// console.log("insert----------");
-	parent.append(el);
+	// parent.append(child);
+	parent.insertBefore(child, anchor || null);
 }
 
 // 删除节点
