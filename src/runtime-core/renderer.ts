@@ -203,6 +203,14 @@ export function creatRenderer(options) {
 			let patched = 0; //已经被patch的数量
 			const keyToNewIndexMap = new Map(); //key的映射 提高diff的效率
 
+			const newIndexToOldIndexMap = new Array(toBePatched); //老节点在新节点位置映射--不同部分
+			let moved = false; //是否需要移动
+			let maxNewIndexSoFar = 0; //最大的新的下标
+
+			for (let i = 0; i < toBePatched; i++) {
+				newIndexToOldIndexMap[i] = 0;
+			}
+
 			// 映射key
 			for (let i = s2; i <= e2; i++) {
 				const nextChild = c2[i];
@@ -227,7 +235,7 @@ export function creatRenderer(options) {
 					newIndex = keyToNewIndexMap.get(prevChild.key);
 				} else {
 					// 无key-->遍历查找
-					for (let j = 0; j < e2; j++) {
+					for (let j = 0; j <= e2; j++) {
 						if (isSomeVNodeType(prevChild, c2[j])) {
 							newIndex = j;
 							break;
@@ -239,9 +247,36 @@ export function creatRenderer(options) {
 					// 不在-->删除
 					hostRemove(prevChild.el);
 				} else {
+					if (newIndex >= maxNewIndexSoFar) {
+						maxNewIndexSoFar = newIndex;
+					} else {
+						moved = true;
+					}
+					newIndexToOldIndexMap[newIndex - s2] = i + 1;
 					// 在-->更新
 					patch(prevChild, c2[newIndex], container, parentComponent, null);
 					patched++;
+				}
+			}
+
+			const increasingNewIndexSequence = moved
+				? getSequence(newIndexToOldIndexMap)
+				: [];
+			let j = increasingNewIndexSequence.length - 1;
+			for (let i = toBePatched; i >= 0; i--) {
+				const nextIndex = i + s2;
+				const nextChild = c2[nextIndex];
+				const anchor = nextIndex + 1 < l2 ? c2[nextIndex + 1].el : null;
+
+				if (newIndexToOldIndexMap[i] === 0) {
+					patch(null, nextChild, container, parentComponent, anchor);
+				} else if (moved) {
+					if (j < 0 || i !== increasingNewIndexSequence[j]) {
+						console.log("移动位置");
+						hostInsert(nextChild.el, container, anchor);
+					} else {
+						j--;
+					}
 				}
 			}
 		}
@@ -399,4 +434,45 @@ export function creatRenderer(options) {
 	return {
 		createApp: createAppAPI(render),
 	};
+}
+
+function getSequence(arr) {
+	const p = arr.slice();
+	const result = [0];
+	let i, j, u, v, c;
+	const len = arr.length;
+	for (i = 0; i < len; i++) {
+		const arrI = arr[i];
+		if (arrI !== 0) {
+			j = result[result.length - 1];
+			if (arr[j] < arrI) {
+				p[i] = j;
+				result.push(i);
+				continue;
+			}
+			u = 0;
+			v = result.length - 1;
+			while (u < v) {
+				c = (u + v) >> 1;
+				if (arr[result[c]] < arrI) {
+					u = c + 1;
+				} else {
+					v = c;
+				}
+			}
+			if (arrI < arr[result[u]]) {
+				if (u > 0) {
+					p[i] = result[u - 1];
+				}
+				result[u] = i;
+			}
+		}
+	}
+	u = result.length;
+	v = result[u - 1];
+	while (u-- > 0) {
+		result[u] = v;
+		v = p[v];
+	}
+	return result;
 }
