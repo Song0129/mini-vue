@@ -217,7 +217,7 @@ export function creatRenderer(options) {
 				keyToNewIndexMap.set(nextChild.key, i);
 			}
 
-			//
+			// 遍历---确定节点在不在新节点中
 			for (let i = s1; i <= e1; i++) {
 				const prevChild = c1[i];
 
@@ -230,7 +230,7 @@ export function creatRenderer(options) {
 				// null undefined
 				let newIndex;
 				// 查找旧结点是否存在于新节点中
-				if (prevChild.key !== null) {
+				if (prevChild.key != null) {
 					// 有key-->映射查找
 					newIndex = keyToNewIndexMap.get(prevChild.key);
 				} else {
