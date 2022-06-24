@@ -1,6 +1,6 @@
 export const enum NodeTypes {
-	INTERPOLATION,
-	SIMPLE_INTERPOLATION,
-	ELEMENT,
-	TEXT,
+	INTERPOLATION, //插值
+	SIMPLE_INTERPOLATION, //插值
+	ELEMENT, //标签
+	TEXT, //文本
 }
