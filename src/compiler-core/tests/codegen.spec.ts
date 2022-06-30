@@ -30,7 +30,7 @@ describe("codegen", () => {
 	it("element", () => {
 		const ast: any = baseParse("<div>hi, {{message}}</div>");
 		transform(ast, {
-			nodeTransforms: [transformExpression, transformText, transformElement],
+			nodeTransforms: [transformExpression, transformElement, transformText],
 		});
 
 		console.log("ast", ast, ast.codegenNode.children);
