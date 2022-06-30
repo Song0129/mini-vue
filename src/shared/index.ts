@@ -4,12 +4,13 @@ export const EMPTY_OBJ = {};
 
 export const isObject = (val: any) => val !== null && typeof val === "object";
 
+export const isString = value => typeof value === "string";
+
 export const hasChanges = (val, newVlaue) => {
 	return !Object.is(val, newVlaue);
 };
 
-export const hasOwn = (val, key) =>
-	Object.prototype.hasOwnProperty.call(val, key);
+export const hasOwn = (val, key) => Object.prototype.hasOwnProperty.call(val, key);
 
 export const capitalize = (str: string) => {
 	return str.charAt(0).toUpperCase() + str.slice(1);
