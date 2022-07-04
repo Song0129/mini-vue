@@ -8,13 +8,7 @@ import { queueJobs } from "./scheduler";
 import { Fragment, Text } from "./vnode";
 
 export function creatRenderer(options) {
-	const {
-		createElement: hostCreateElement,
-		patchProp: hostPatchProp,
-		insert: hostInsert,
-		remove: hostRemove,
-		setElementText: hostSetElementText,
-	} = options;
+	const { createElement: hostCreateElement, patchProp: hostPatchProp, insert: hostInsert, remove: hostRemove, setElementText: hostSetElementText } = options;
 
 	function render(vnode, container) {
 		// patch
@@ -51,13 +45,7 @@ export function creatRenderer(options) {
 		}
 	}
 
-	function processElement(
-		n1: any,
-		n2: any,
-		container: any,
-		parentComponent: any,
-		anchor: any
-	) {
+	function processElement(n1: any, n2: any, container: any, parentComponent: any, anchor: any) {
 		if (!n1) {
 			mountElement(n2, container, parentComponent, anchor);
 		} else {
@@ -79,13 +67,7 @@ export function creatRenderer(options) {
 		patchChildren(n1, n2, el, parentComponent, anchor);
 	}
 
-	function patchChildren(
-		n1: any,
-		n2: any,
-		container: any,
-		parentComponent: any,
-		anchor: any
-	) {
+	function patchChildren(n1: any, n2: any, container: any, parentComponent: any, anchor: any) {
 		const { shapeFlag: prevShapeFlag } = n1;
 		const c1 = n1.children; //老的子节点
 
@@ -118,13 +100,7 @@ export function creatRenderer(options) {
 	}
 
 	// 对比数组节点
-	function patchKeyedChildren(
-		c1,
-		c2,
-		container,
-		parentComponent,
-		parentAnchor
-	) {
+	function patchKeyedChildren(c1, c2, container, parentComponent, parentAnchor) {
 		const l2 = c2.length; //新的子节点的长度
 		let i = 0; //指针位置
 		let e1 = c1.length - 1; //老的最后一位下标
@@ -261,9 +237,7 @@ export function creatRenderer(options) {
 				}
 			}
 
-			const increasingNewIndexSequence = moved
-				? getSequence(newIndexToOldIndexMap)
-				: [];
+			const increasingNewIndexSequence = moved ? getSequence(newIndexToOldIndexMap) : [];
 			let j = increasingNewIndexSequence.length - 1;
 			for (let i = toBePatched; i >= 0; i--) {
 				const nextIndex = i + s2;
@@ -314,12 +288,7 @@ export function creatRenderer(options) {
 	}
 
 	// 挂载元素
-	function mountElement(
-		vnode: any,
-		container: any,
-		parentComponent: any,
-		anchor: any
-	) {
+	function mountElement(vnode: any, container: any, parentComponent: any, anchor: any) {
 		// vnode -> element -> div
 		// canvas new Element()
 		const el = (vnode.el = hostCreateElement(vnode.type));
@@ -368,13 +337,7 @@ export function creatRenderer(options) {
 		});
 	}
 
-	function processComponent(
-		n1: any,
-		n2: any,
-		container: any,
-		parentComponent: any,
-		anchor: any
-	) {
+	function processComponent(n1: any, n2: any, container: any, parentComponent: any, anchor: any) {
 		if (!n1) {
 			mountComponent(n2, container, parentComponent, anchor);
 		} else {
@@ -396,16 +359,8 @@ export function creatRenderer(options) {
 	}
 
 	// 挂载组件
-	function mountComponent(
-		initialVnode: any,
-		container,
-		parentComponent,
-		anchor
-	) {
-		const instance = (initialVnode.component = createComponentInstance(
-			initialVnode,
-			parentComponent
-		));
+	function mountComponent(initialVnode: any, container, parentComponent, anchor) {
+		const instance = (initialVnode.component = createComponentInstance(initialVnode, parentComponent));
 
 		setupComponent(instance);
 		setupRenderEffect(instance, initialVnode, container, anchor);
@@ -417,7 +372,7 @@ export function creatRenderer(options) {
 				if (!instance.isMounted) {
 					console.log("init");
 					const { proxy } = instance;
-					const subTree = (instance.subTree = instance.render.call(proxy));
+					const subTree = (instance.subTree = instance.render.call(proxy, proxy));
 					// vnode -> patch
 					// vnode -> element -> mountElement
 					patch(null, subTree, container, instance, anchor);
@@ -435,7 +390,7 @@ export function creatRenderer(options) {
 						updateComponentPreRender(instance, next);
 					}
 					const { proxy } = instance;
-					const subTree = instance.render.call(proxy);
+					const subTree = instance.render.call(proxy, proxy);
 					const prevSubTree = instance.subTree;
 					instance.subTree = subTree;
 
@@ -452,13 +407,7 @@ export function creatRenderer(options) {
 		);
 	}
 
-	function processFragment(
-		n1: any,
-		n2: any,
-		container: any,
-		parentComponent: any,
-		anchor: any
-	) {
+	function processFragment(n1: any, n2: any, container: any, parentComponent: any, anchor: any) {
 		mountChildren(n2.children, container, parentComponent, anchor);
 	}
 
