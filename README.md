@@ -4,8 +4,6 @@ Vue3 源码学习，实现简易 vue3
 
 实现 vue3 中的三大模块：
 reactivity(响应式)、runtime(运行时)、compiler(编译)
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 1. reactivity:
    1. reactive 的实现
@@ -23,7 +21,3 @@ reactivity(响应式)、runtime(运行时)、compiler(编译)
    13. 支持 isProxy
    14. 支持 shallowReadonly
    15. 支持 proxyRefs
-=======
->>>>>>> 56883f0594b5eb7a1e816412f8b75c68aeed2e05
-=======
->>>>>>> 56883f0594b5eb7a1e816412f8b75c68aeed2e05
