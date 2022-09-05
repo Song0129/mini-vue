@@ -6,6 +6,7 @@ Vue3 源码学习，实现简易 vue3
 reactivity(响应式)、runtime(运行时)、compiler(编译)
 
 1. reactivity:
+
    1. reactive 的实现
    2. ref 的实现
    3. readonly 的实现
@@ -21,3 +22,19 @@ reactivity(响应式)、runtime(运行时)、compiler(编译)
    13. 支持 isProxy
    14. 支持 shallowReadonly
    15. 支持 proxyRefs
+
+2. runtime-core:
+   1. 支持组件类型
+   2. 支持 element 类型
+   3. 初始化 props
+   4. setup 可获取 props 和 context
+   5. 支持 component emit
+   6. 支持 proxy
+   7. 可以在 render 函数中获取 setup 返回的对象
+   8. nextTick 的实现
+   9. 支持 getCurrentInstance
+   10. 支持 provide/inject
+   11. 支持最基础的 slots
+   12. 支持 Text 类型节点
+   13. 支持 $el api
+   14. 支持 watchEffect1.
