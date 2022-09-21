@@ -20,5 +20,8 @@
 		"tslib": "^2.4.0",
 		"typescript": "^4.6.2"
 	},
-	"dependencies": {}
+	"dependencies": {
+		"@mini-vue/compiler-core": "workspace:^1.0.0",
+		"@mini-vue/runtime-dom": "workspace:^1.0.0"
+	}
 }
