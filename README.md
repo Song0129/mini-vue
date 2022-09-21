@@ -39,3 +39,21 @@ reactivity(响应式)、runtime(运行时)、compiler(编译)
 - 支持 Text 类型节点
 - 支持 $el api
 - 支持 watchEffect1.
+
+## compiler-core
+
+- 解析插值
+- 解析 element
+- 解析 text
+
+## runtime-dom
+
+- 支持 custom renderer
+
+## runtime-test
+
+- 支持测试 runtime-core 的逻辑
+
+## infrastructure
+
+- support monorepo with pnpm
