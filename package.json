@@ -5,7 +5,7 @@
 	"module": "lib/mini-vue.esm.js",
 	"license": "MIT",
 	"scripts": {
-		"test": "jest",
+		"test": "vitest",
 		"build": "rollup -c rollup.config.js"
 	},
 	"devDependencies": {
@@ -13,12 +13,10 @@
 		"@babel/preset-env": "^7.16.11",
 		"@babel/preset-typescript": "^7.16.7",
 		"@rollup/plugin-typescript": "^8.3.2",
-		"@types/jest": "^27.4.1",
-		"babel-jest": "^27.5.1",
-		"jest": "^27.5.1",
 		"rollup": "^2.70.2",
 		"tslib": "^2.4.0",
-		"typescript": "^4.6.2"
+		"typescript": "^4.6.2",
+		"vitest": "^0.23.4"
 	},
 	"dependencies": {
 		"@mini-vue/compiler-core": "workspace:^1.0.0",
