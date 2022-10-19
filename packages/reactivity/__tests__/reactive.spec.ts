@@ -1,4 +1,5 @@
 import { reactive, isReactive, isProxy } from "../src/reactive";
+import { describe, it, expect, test } from "vitest";
 
 describe("reactive", () => {
 	it("happy path", () => {

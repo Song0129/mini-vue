@@ -4,6 +4,7 @@ import { transform } from "../src/transform";
 import { transformElement } from "../src/transforms/transformElement";
 import { transformExpression } from "../src/transforms/transformExpression";
 import { transformText } from "../src/transforms/transformText";
+import { describe, it, expect } from "vitest";
 
 describe("codegen", () => {
 	it("string", () => {
